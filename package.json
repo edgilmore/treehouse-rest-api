@@ -1,0 +1,10 @@
+{
+  "name": "treehouse-rest-api",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "Ed Gilmore <edgilmore@live.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+}
