@@ -5,6 +5,8 @@
   "author": "Ed Gilmore <edgilmore@live.com>",
   "license": "UNLICENSED",
   "dependencies": {
+    "eslint": "^4.8.0",
+    "eslint-config-airbnb": "^16.0.0",
     "express": "^4.16.1"
   }
 }
