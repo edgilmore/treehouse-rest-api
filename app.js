@@ -18,9 +18,11 @@ const jsonCheck = (req, res, next) => {
         return res;
     }
 };
-app.use(jsonCheck);
+
 app.use(jsonParser());
-app.use(jsonCheck);
+
+
+app.use('/questions', routes);
 
 app.use((req, res, next) => {
     req.myMessage = `Hello, middlware #2`;
