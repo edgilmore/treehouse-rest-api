@@ -18,7 +18,6 @@ router.post('/:qId/answers', function (req, res) {
         body: req.body
     });
 });
-
 //put /questions/:id/answers/:id
 //edit a specific answer
 router.put('/:qId/answers/:aId', function (req, res) {
@@ -38,7 +37,6 @@ router.delete('/:qId/answers/:aId', function (req, res) {
         answerId: req.params.aId
     });
 });
-
 //post /questions/:qId/answers/:aId/vote-up
 //post /questions/:qId/answers/:aId/vote-down
 //vote on an answer
