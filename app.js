@@ -9,19 +9,9 @@ const jsonParser = require('body-parser').json;
 
 const port = process.env.PORT || 3000;
 
-const jsonCheck = (req, res, next) => {
-    if(req.body){
-        console.log(`The sky is ${req.body.color}`);
-        return res;
-    }
-    else {
-        console.log(`there is no body property on the request`);
-        return res;
-    }
-};
+
 app.use(logger('dev'));
 app.use(jsonParser());
-
 
 app.use('/questions', routes);
 
