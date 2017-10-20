@@ -3,6 +3,7 @@
 const express = require('express');
 const app = express();
 const routes = require('./routes');
+const logger = require('morgan');
 
 const jsonParser = require('body-parser').json;
 
@@ -18,7 +19,7 @@ const jsonCheck = (req, res, next) => {
         return res;
     }
 };
-
+app.use(logger('dev'));
 app.use(jsonParser());
 
 
