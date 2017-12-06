@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const routes = require('./routes');
 const logger = require('morgan');
+const db = require('./mongo_sandbox');
 
 const jsonParser = require('body-parser').json;
 
