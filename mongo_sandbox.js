@@ -23,10 +23,7 @@ db.once('open', function () {
             type: String,
             default: 'gold'
         },
-        size: {
-            type: String,
-            default: 'small'
-        },
+        size: String,
         mass: {
             type: Number,
             default: '0.007'
@@ -36,6 +33,20 @@ db.once('open', function () {
             default: 'goldie'
         }
     });
+    AnimalScheme.pre('save', function(next){
+        if(this.mass >= 100) {
+            this.size = 'big';
+        } else if (this.mass >= 5 && this.mass < 100) {
+            this.size = 'medium';
+        } else {
+            this.size = 'small';
+        }
+        next();
+    });
+    AnimalScheme.statics.findSize = function(size,callback){
+        //this === Animal
+        return this.find({size: size}, callback);
+    };
     // create model for the animal scheme in mongo
     const Animal = mongoose.model('Animal', AnimalScheme);
     const animal = new Animal({});
@@ -43,33 +54,49 @@ db.once('open', function () {
     const elephant = new Animal({
         type: 'elephant',
         color: 'gray',
-        size: 'big',
         mass: 6000,
         name: 'Larry',
     });
     const whale = new Animal({
         type: 'whale',
-        size: 'big',
         mass: 190500,
         name: 'Fig',
-    })
-    // save the object
-    elephant.save(function (err) {
-        if (err) console.error(err);
-        animal.save(function(err) {
-            if (err) console.error(err);
-            whale.save(function(err){
-                if(err) console.error(err);
-                Animal.find({size: 'big'}, function(err, animals){
-                    animals.forEach(function(animal){
-                        console.log(animal.name + ' the ' + animal.color + ' ' + animal.type);
-                    });
-                    closeDataStore(db);
-                });
-            })
-        });
     });
 
+    const animalData = [{
+            type: 'mouse',
+            color: 'gray',
+            mass: 0.035,
+            name: 'Marvin'
+        },
+        {
+            type: 'nutria',
+            color: 'brown',
+            mass: 6.35,
+            name: 'Gretchen'
+        },
+        {
+            type: 'wolf',
+            gray: 'gray',
+            mass: 45,
+            name: 'Iris',
+        },
+        elephant,
+        whale,
+        animal
+    ];
+    Animal.remove({}, function (err) {
+        if (err) console.error(err);
+        Animal.create(animalData, function (err, animals) {
+            if (err) console.error(err);
+            Animal.findSize('medium', function (err, animals) {
+                animals.forEach(function (animal) {
+                    console.log(animal.name + ' the ' + animal.color + ' ' + animal.type);
+                });
+                closeDataStore(db);
+            });
+        });
+    });
 });
 // close db
 function closeDataStore(db) {
