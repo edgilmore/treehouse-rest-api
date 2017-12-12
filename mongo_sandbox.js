@@ -47,6 +47,10 @@ db.once('open', function () {
         //this === Animal
         return this.find({size: size}, callback);
     };
+    AnimalScheme.methods.findSameColor = function(callback) {
+        //this === document
+        return this.model('Animal').find({color: this.color}, callback);
+    };
     // create model for the animal scheme in mongo
     const Animal = mongoose.model('Animal', AnimalScheme);
     const animal = new Animal({});
@@ -77,7 +81,7 @@ db.once('open', function () {
         },
         {
             type: 'wolf',
-            gray: 'gray',
+            colors: 'gray',
             mass: 45,
             name: 'Iris',
         },
@@ -89,11 +93,14 @@ db.once('open', function () {
         if (err) console.error(err);
         Animal.create(animalData, function (err, animals) {
             if (err) console.error(err);
-            Animal.findSize('medium', function (err, animals) {
-                animals.forEach(function (animal) {
-                    console.log(animal.name + ' the ' + animal.color + ' ' + animal.type);
+            Animal.findOne({type: 'elephant'}, function (err, elephant) {
+                elephant.findSameColor(function(err, animals){
+                    if(err) console.error(err);
+                    animals.forEach(function (animal) {
+                        console.log(animal.name + ' the ' + animal.color + ' ' + animal.type);
+                    });
+                    closeDataStore(db);
                 });
-                closeDataStore(db);
             });
         });
     });
