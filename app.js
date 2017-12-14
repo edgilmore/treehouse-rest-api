@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const routes = require('./routes');
 const logger = require('morgan');
-const db = require('./mongo_sandbox');
+const mongoose = require('mongoose');
 
 const jsonParser = require('body-parser').json;
 
@@ -13,6 +13,18 @@ const port = process.env.PORT || 3000;
 
 app.use(logger('dev'));
 app.use(jsonParser());
+
+mongoose.connect('mongodb://localhost:27017/qa');
+
+const db = mongoose.connection;
+
+db.on('error', function(err){
+    console.error('connection error: ', err);
+});
+
+db.on('open', function(){
+    console.debug('db connection successful');
+});
 
 app.use('/questions', routes);
 // catch 404 and forward to error handler
