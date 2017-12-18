@@ -8,12 +8,19 @@ const router = express.Router();
 
 
 //get /questions
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     //call the find method to question model
     Question.find({}, null, {sort: {createdAt: -1}}, function(err, questions){
         if(err) return next(err);
         res.json(questions);
     });
+    // alternate
+    // Question.find({})
+    //             .sort({createdAt: -1})
+    //             .exec(function(err, questions){
+    //                 if(err) return next(err);
+    //                 res.json(questions);
+    //             });
 });
 //post /questions/:id/answers
 router.post('/:qId/answers', (req, res) => {
