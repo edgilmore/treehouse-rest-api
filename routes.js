@@ -9,9 +9,10 @@ const router = express.Router();
 
 //get /questions
 router.get('/', (req, res) => {
-    //return all the questions
-    res.json({
-        response: "You sent me a GET request"
+    //call the find method to question model
+    Question.find({}, null, {sort: {createdAt: -1}}, function(err, questions){
+        if(err) return next(err);
+        res.json(questions);
     });
 });
 //post /questions/:id/answers
