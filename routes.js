@@ -1,7 +1,11 @@
 'use strict';
 
 const express = require('express');
+
+const Question = require('./models').Question;
+
 const router = express.Router();
+
 
 //get /questions
 router.get('/', (req, res) => {
