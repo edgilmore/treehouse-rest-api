@@ -31,6 +31,11 @@ const AnswerSchema = new Scheme({
     }
 });
 
+AnswerSchema.method('update', function(updates, callback) {
+    Object.assign(this, updates, {updatedAt: new Date()});
+    this.parent().save(callback);
+});
+
 const QuestionSchema = new Scheme({
     text: String,
     createdAt: {
