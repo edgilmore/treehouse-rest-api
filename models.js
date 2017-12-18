@@ -4,6 +4,17 @@ const mongoose = require('mongoose');
 
 const Scheme = mongoose.Schema;
 
+const sortAnswers = function(a, b){
+    // negative if a should appear before b
+    // zero to leave unchanged
+    // positive is a should appear after b
+    if(a.votes === b.votes)
+    {
+        return a.updatedAt - b.updatedAt;
+    }
+    return b.votes - a.votes;
+};
+
 const AnswerSchema = new Scheme({
     text: String,
     createdAt: {
@@ -30,7 +41,7 @@ const QuestionSchema = new Scheme({
 });
 
 QuestionSchema.pre('save', function(next){
-    this.answers.sort();
+    this.answers.sort(sortAnswers);
     next();
 });
 
