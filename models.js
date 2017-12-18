@@ -29,6 +29,11 @@ const QuestionSchema = new Scheme({
     answers: [AnswerSchema]
 });
 
+QuestionSchema.pre('save', function(next){
+    this.answers.sort();
+    next();
+});
+
 const Question = mongoose.model('Question', QuestionSchema);
 
 module.exports.Question = Question;
