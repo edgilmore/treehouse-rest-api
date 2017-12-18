@@ -6,8 +6,6 @@ const routes = require('./routes');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 
-const Question = require('./models').Question;
-
 const jsonParser = require('body-parser').json;
 
 const port = process.env.PORT || 3000;
