@@ -36,6 +36,16 @@ AnswerSchema.method('update', function(updates, callback) {
     this.parent().save(callback);
 });
 
+AnswerSchema.method('vote', function(votes, callback){
+    if(vote === 'up') {
+        this.votes += 1;
+    }
+    else {
+        this.votes -= 1;
+    }
+    this.parent().save(callback);
+});
+
 const QuestionSchema = new Scheme({
     text: String,
     createdAt: {
