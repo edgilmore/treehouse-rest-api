@@ -89,17 +89,15 @@ router.post('/:qId/answers/:aId/vote-:dir', (req, res, next) => {
             err.status = 404;
             next(err);
         } else {
+            req.vote = req.params.dir;
             next();
         }
     },
     (req, res) => {
-        res.json({
-            response: `You sent me a POST request to /vote-${req.params.dir}`,
-            questionId: req.params.qId,
-            answerId: req.params.aId,
-            vote: req.params.dir
+        req.answer.vote(req.vot, (err, question) => {
+            if(err) return next(err);
+            res.json(question);
         });
     });
-
 
 module.exports = router;
