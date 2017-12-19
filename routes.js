@@ -10,7 +10,7 @@ const router = express.Router();
 //get /questions
 router.get('/', (req, res, next) => {
     //call the find method to question model
-    Question.find({}, null, {sort: {createdAt: -1}}, function(err, questions){
+    Question.find({}, null, {sort: {createdAt: -1}}, (err, questions) => {
         if(err) return next(err);
         res.json(questions);
     });
@@ -21,6 +21,16 @@ router.get('/', (req, res, next) => {
     //                 if(err) return next(err);
     //                 res.json(questions);
     //             });
+});
+// post /questions
+// Route for creating questions
+router.post('/', (req, res, next) => {
+    const question = new Question(req.body);
+    question.save(function(err, question){
+        if(err) return next(err);
+        res.status(201);
+        res.json(question);
+    });
 });
 //post /questions/:id/answers
 router.post('/:qId/answers', (req, res) => {
