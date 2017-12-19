@@ -1,11 +1,20 @@
 'use strict';
 
 const express = require('express');
-
 const Question = require('./models').Question;
-
 const router = express.Router();
-
+router.param('qId', (req, res, next, id) => {
+    Question.findById(id, (err, doc) => {
+        if(err) return next(err);
+        if(!doc) {
+            err = new Error('Not Found');
+            err.status = 404;
+            return next(err);
+        }
+        req.question = doc;
+        next();
+    });
+});
 
 //get /questions
 router.get('/', (req, res, next) => {
@@ -81,10 +90,7 @@ router.post('/:qId/answers/:aId/vote-:dir', (req, res, next) => {
     });
 // get /questions/:qId
 router.get('/:qId', (req, res, next) => {
-    Question.findById(req.params.qId, (err, doc) => {
-        if(err) return next(err);
-        res.json(doc);
-    });
+   res.json(req.question);
 });
 
 module.exports = router;
