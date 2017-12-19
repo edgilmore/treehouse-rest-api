@@ -55,7 +55,7 @@ router.post('/', (req, res, next) => {
 });
 //post /questions/:id/answers
 router.post('/:qId/answers', (req, res, next) => {
-    req.question.answers.push(res.body);
+    req.question.answers.push(req.body);
     req.question.save((err, quesiton) => {
         if(err) return next(err);
         res.status = 201;
@@ -94,7 +94,7 @@ router.post('/:qId/answers/:aId/vote-:dir', (req, res, next) => {
         }
     },
     (req, res) => {
-        req.answer.vote(req.vot, (err, question) => {
+        req.answer.vote(req.vote, (err, question) => {
             if(err) return next(err);
             res.json(question);
         });

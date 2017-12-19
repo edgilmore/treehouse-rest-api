@@ -36,7 +36,7 @@ AnswerSchema.method('update', function(updates, callback) {
     this.parent().save(callback);
 });
 
-AnswerSchema.method('vote', function(votes, callback){
+AnswerSchema.method('vote', function(vote, callback){
     if(vote === 'up') {
         this.votes += 1;
     }
