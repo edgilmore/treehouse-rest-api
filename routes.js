@@ -12,8 +12,16 @@ router.param('qId', (req, res, next, id) => {
             return next(err);
         }
         req.question = doc;
-        next();
+        return next();
     });
+});
+router.param('aId', (req, res, next, id) => {
+    req.answer = req.question.answers.id(id);
+    if(!req.answer) {
+        err = new Error('Not Found');
+        err.status = 404;
+    }
+    return next();
 });
 
 //get /questions
