@@ -42,11 +42,12 @@ router.post('/', (req, res, next) => {
     });
 });
 //post /questions/:id/answers
-router.post('/:qId/answers', (req, res) => {
-    res.json({
-        response: "You sent me a POST request /answers",
-        questionId: req.params.qId,
-        body: req.body
+router.post('/:qId/answers', (req, res, next) => {
+    req.question.answers.push(res.body);
+    req.question.save((err, quesiton) => {
+        if(err) return next(err);
+        res.status = 201;
+        res.json(quesiton);
     });
 });
 //put /questions/:id/answers/:id
