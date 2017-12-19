@@ -80,9 +80,10 @@ router.post('/:qId/answers/:aId/vote-:dir', (req, res, next) => {
         });
     });
 // get /questions/:qId
-router.get('/:qId', (req, res) => {
-    res.json({
-        response: `You sent me a GET request for an ID ${req.params.qId}`,
+router.get('/:qId', (req, res, next) => {
+    Question.findById(req.params.qId, (err, doc) => {
+        if(err) return next(err);
+        res.json(doc);
     });
 });
 
