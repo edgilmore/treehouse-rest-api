@@ -25,7 +25,16 @@ db.on('error', function(err){
 db.on('open', function(){
     console.debug('db connection successful');
 });
-
+// custom middleware that allows for access from all domains
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requsted-With, Content-Type, Accept');
+    if(req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT,POST,DELETE');
+        return res.status(200).json({});
+    }
+    next();
+});
 app.use('/questions', routes);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
