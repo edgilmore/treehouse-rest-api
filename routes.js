@@ -39,6 +39,10 @@ router.get('/', (req, res, next) => {
     //                 res.json(questions);
     //             });
 });
+// get /questions/:qId
+router.get('/:qId', (req, res, next) => {
+    res.json(req.question);
+ });
 // post /questions
 // Route for creating questions
 router.post('/', (req, res, next) => {
@@ -60,21 +64,20 @@ router.post('/:qId/answers', (req, res, next) => {
 });
 //put /questions/:id/answers/:id
 //edit a specific answer
-router.put('/:qId/answers/:aId', (req, res) => {
-    res.json({
-        response: 'You sent me a PUT request to /answers',
-        questionId: req.params.qId,
-        answerId: req.params.aId,
-        body: req.body
-    })
+router.put('/:qId/answers/:aId', (req, res, next) => {
+    req.answer.update(req.body, (err, result) => {
+        if(err) return next(err);
+        res.json(result)
+    });
 });
 //delete /questions/:qId/answers/:aId
 //delete a specific answer
-router.delete('/:qId/answers/:aId', (req, res) => {
-    res.json({
-        response: 'You sent me a DELETE request to /answers',
-        questionId: req.params.qId,
-        answerId: req.params.aId
+router.delete('/:qId/answers/:aId', (req, res, next) => {
+    req.question.answer.remove((err) => {
+        req.question.save((err, question) => {
+            if(err) return next(err);
+            res.json(question);
+        });
     });
 });
 //post /questions/:qId/answers/:aId/vote-up
@@ -97,9 +100,6 @@ router.post('/:qId/answers/:aId/vote-:dir', (req, res, next) => {
             vote: req.params.dir
         });
     });
-// get /questions/:qId
-router.get('/:qId', (req, res, next) => {
-   res.json(req.question);
-});
+
 
 module.exports = router;
